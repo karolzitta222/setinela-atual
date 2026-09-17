@@ -1,0 +1,179 @@
+/* ===== ESTILO GERAL ===== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:#9dd2fe;
+    color:#002345;
+    line-height:1.5;
+    display: block;
+    text-align: center;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+    width:95%;
+    max-width:1000px;
+    margin:30px auto;
+    background:#efdafd;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    border-top:6px solid #64007d;
+    width: 500px;
+   
+    /* border: 2px solid rgb(76, 0, 76); */
+}
+
+/* ===== TÍTULOS ===== */
+h1, h2, h3{
+    color:#ad0dfd;
+    margin-bottom:15px
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:6px;
+    font-weight:600;
+    color:#4c345e;
+}
+
+/* ===== CAMPOS ===== */
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid #cfd8dc;
+    border-radius:8px;
+    font-size:15px;
+    background:#fdfdfd;
+    transition:.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#9d0dfd;
+    box-shadow:0 0 8px rgba(189, 13, 253, 0.2);
+   
+    
+}
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+/* ===== BOTÕES ===== */
+button{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:none;
+    border-radius:8px;
+    background:#aa1ffa;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#900bd7;
+    transform:translateY(-2px);
+}
+
+/* ===== CARD ===== */
+.card{
+    background:#fff;
+    border-left:6px solid #6f0094;
+    border-radius:12px;
+    padding:20px;
+    margin:20px 0;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    
+}
+
+.card h3{
+    margin-bottom:10px;
+}
+
+.card p{
+    margin:6px 0;
+}
+
+/* ===== STATUS ===== */
+.verde{
+    display:inline-block;
+    background:#198754;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.amarelo{
+    display:inline-block;
+    background:#ffc107;
+    color:#212529;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.vermelho{
+    display:inline-block;
+    background:#dc3545;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+/* ===== TABELAS ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table th{
+    background:#850dfd;
+    color:#fff;
+    padding:12px;
+    text-align:left;
+}
+
+table td{
+    padding:12px;
+    border-bottom:1px solid #dee2e6;
+}
+
+table tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:768px){
+
+    .container{
+        width:95%;
+        padding:20px;
+    }
+
+    button{
+        font-size:15px;
+    }
+
+}
