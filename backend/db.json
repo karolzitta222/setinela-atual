@@ -14,6 +14,16 @@
       "usuario": "atendimento",
       "senha": "123",
       "tipo": "atendimento"
+    },
+    {
+      "usuario": "ana v",
+      "senha": "123",
+      "tipo": "triagem"
+    },
+    {
+      "usuario": "karol",
+      "senha": "123",
+      "tipo": "medico"
     }
   ],
   "pacientes": [
@@ -22,7 +32,7 @@
       "nome": "",
       "cpf": "",
       "tipo": "Particular",
-      "status": "triagem",
+      "status": "aguardando_medico",
       "createdAt": "2026-04-22T11:35:28.699Z"
     },
     {
@@ -96,6 +106,30 @@
       "tipo": "Particular",
       "status": "triagem",
       "createdAt": "2026-08-05T11:46:07.805Z"
+    },
+    {
+      "id": 1792674124916,
+      "nome": "ana v",
+      "cpf": "12345678900",
+      "tipo": "Convenio",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:02:04.916Z"
+    },
+    {
+      "id": 1792674564806,
+      "nome": "jhemile",
+      "cpf": "12345678900",
+      "tipo": "Particular",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:09:24.806Z"
+    },
+    {
+      "id": 1792677165971,
+      "nome": "karol",
+      "cpf": "12345678900",
+      "tipo": "Particular",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:52:45.971Z"
     }
   ],
   "triagens": [
@@ -286,6 +320,65 @@
       "risco": "vermelho",
       "status": "aguardando_medico",
       "createdAt": "2026-08-05T11:42:28.054Z"
+    },
+    {
+      "id": 1792673884092,
+      "nome": "ana v",
+      "sintoma": "dor_leve",
+      "temperatura": 38.3,
+      "alergia": "nao",
+      "observacao": "mulher",
+      "risco": "amarelo",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T12:58:04.092Z"
+    },
+    {
+      "id": 1792674770055,
+      "pacienteId": "1792674564806",
+      "nome": "jhemile",
+      "sintoma": "falta_ar_grave",
+      "temperatura": 40,
+      "alergia": "gato",
+      "observacao": "mulher",
+      "risco": "vermelho",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:12:50.055Z"
+    },
+    {
+      "id": 1792675130016,
+      "pacienteId": "1792674124916",
+      "nome": "ana v",
+      "sintoma": "dor_leve",
+      "temperatura": 38,
+      "alergia": "nao",
+      "observacao": "",
+      "risco": "amarelo",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:18:50.016Z"
+    },
+    {
+      "id": 1792675340394,
+      "pacienteId": "1776857728699",
+      "nome": "gabriel",
+      "sintoma": "infarto",
+      "temperatura": 38,
+      "alergia": "mulher",
+      "observacao": "gay",
+      "risco": "vermelho",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:22:20.394Z"
+    },
+    {
+      "id": 1792677203322,
+      "pacienteId": 1792677165971,
+      "nome": "karol",
+      "sintoma": "Dor",
+      "temperatura": 35,
+      "alergia": "nao",
+      "observacao": "",
+      "risco": "verde",
+      "status": "aguardando_medico",
+      "createdAt": "2026-10-22T13:53:23.322Z"
     }
   ],
   "consultas": [
@@ -432,6 +525,22 @@
       "medicacao": "Amoxicilina",
       "obs": "",
       "createdAt": "2026-08-05T11:44:38.718Z"
+    },
+    {
+      "id": 1792673963971,
+      "paciente": "ana v",
+      "diagnostico": "virose",
+      "medicacao": "Dipirona",
+      "obs": "mulher",
+      "createdAt": "2026-10-22T12:59:23.971Z"
+    },
+    {
+      "id": 1792674825761,
+      "paciente": "jhemile",
+      "diagnostico": "gay",
+      "medicacao": "Ibuprofeno",
+      "obs": "mulher",
+      "createdAt": "2026-10-22T13:13:45.761Z"
     }
   ]
 }

@@ -1,36 +1,89 @@
+
 <!DOCTYPE html>
-<html>
-<head><link rel="stylesheet" href="css/style.css"></head>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atendimento - Hospital Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
+
 <div class="container">
-<h2>Atendimento</h2>
+    <a class="voltar" href="index.html">← Voltar ao login</a>
 
-<input id="nome" placeholder="Nome">
-<input id="cpf" placeholder="CPF">
+    <h2>Atendimento Hospitalar</h2>
+    <p class="subtitulo">Cadastro de pacientes para triagem</p>
 
-<select id="tipo">
-  <option>Convenio</option>
-  <option>Particular</option>
-</select>
+    <form id="formAtendimento">
+        <label for="nome">Nome do paciente</label>
+        <input id="nome" type="text"
+               placeholder="Nome completo" required>
 
-<input type="file" id="foto">
+        <label for="cpf">CPF</label>
+        <input id="cpf" type="text"
+               placeholder="CPF do paciente" required>
 
-<button onclick="cadastrar()">Cadastrar</button>
+        <label for="tipo">Tipo de atendimento</label>
+        <select id="tipo" required>
+            <option value="Convenio">Convênio</option>
+            <option value="Particular">Particular</option>
+        </select>
+
+        <button id="botaoCadastrar" type="submit">
+            Cadastrar paciente
+        </button>
+    </form>
+
+    <p id="mensagem" class="mensagem" role="status"></p>
 </div>
 
 <script>
-function cadastrar(){
- fetch("http://localhost:3000/atendimento",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body: JSON.stringify({
-    nome: nome.value,
-    cpf: cpf.value,
-    tipo: tipo.value
-  })
- });
- alert("Paciente enviado para triagem");
-}
+const form = document.getElementById("formAtendimento");
+const mensagem = document.getElementById("mensagem");
+const botao = document.getElementById("botaoCadastrar");
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const nome = document.getElementById("nome").value.trim();
+    const cpf = document.getElementById("cpf").value.trim();
+    const tipo = document.getElementById("tipo").value;
+
+    botao.disabled = true;
+    mensagem.textContent = "Cadastrando paciente...";
+
+    try {
+        const resposta = await fetch("/atendimento", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ nome, cpf, tipo })
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(dados.erro || "Erro ao cadastrar.");
+        }
+
+        mensagem.textContent =
+            "Paciente cadastrado e enviado para a triagem!";
+
+        form.reset();
+
+    } catch (erro) {
+        mensagem.textContent =
+            "Não foi possível cadastrar. Confira se o servidor está ligado.";
+
+        console.error("Erro no atendimento:", erro);
+
+    } finally {
+        botao.disabled = false;
+    }
+});
 </script>
+
 </body>
 </html>

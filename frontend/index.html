@@ -1,35 +1,239 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hello Kitty's Hospital</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            background: linear-gradient(135deg, #eaf5ff, #eeeaff, #fff0f8);
+            color: #5e5b83;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            padding: 35px 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e3dcff;
+            border-radius: 25px;
+            box-shadow: 0 12px 35px rgba(145, 133, 194, 0.18);
+        }
+
+        .logo {
+            display: block;
+            width: 290px;
+            max-width: 100%;
+            height: 125px;
+            object-fit: contain;
+            margin: 0 auto 15px;
+        }
+
+        h2 {
+            margin: 10px 0;
+            color: #8179c9;
+            font-size: 26px;
+        }
+
+        .subtitulo {
+            margin: 0 0 27px;
+            color: #a09bbd;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            margin: 14px 0;
+            padding: 15px;
+            border: 1.5px solid #dedcf5;
+            border-radius: 13px;
+            background: #fbfaff;
+            color: #5e5b83;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input::placeholder {
+            color: #aaa6c3;
+        }
+
+        input:focus {
+            border-color: #aaa5e8;
+            box-shadow: 0 0 0 3px #f0edff;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 12px;
+            padding: 15px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(100deg, #b8d9ff, #d1c2ff);
+            color: #555183;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px #e0d9ff;
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: wait;
+            transform: none;
+        }
+
+        .rodape {
+            margin-top: 24px;
+            color: #aaa6c3;
+            font-size: 12px;
+        }
+
+        @media (max-width: 450px) {
+            .container {
+                padding: 28px 20px;
+            }
+
+            .logo {
+                height: 100px;
+            }
+
+            h2 {
+                font-size: 23px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
 <div class="container">
-  
-  <!-- <img src="hospital imagem.png" width="100"> -->
-  <br><h2>Sistema Hospitalar</h2>
-  <input id="usuario" placeholder="Usuário">
-  <input id="senha" type="password" placeholder="Senha">
-  <button onclick="login()">Entrar</button>
+
+    <img
+        src="logo.png"
+        alt="Hello Kitty's Hospital"
+        class="logo"
+    >
+
+    <h2>Sistema Hospitalar</h2>
+
+    <p class="subtitulo">
+        Bem-vindo(a)!<br>
+        Entre com seus dados para continuar.
+    </p>
+
+    <form id="formLogin">
+        <input
+            id="usuario"
+            type="text"
+            placeholder="Nome de usuário"
+            autocomplete="username"
+            required
+        >
+
+        <input
+            id="senha"
+            type="password"
+            placeholder="Senha"
+            autocomplete="current-password"
+            required
+        >
+
+        <button type="submit" id="botaoEntrar">Entrar</button>
+    </form>
+
+    <p class="rodape">Hello Kitty's Hospital · Hospital Pro</p>
+
 </div>
 
 <script>
-function login() {
-  fetch("http://localhost:3000/login", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      usuario: usuario.value,
-      senha: senha.value
-    })
-  })
-  .then(r => r.json())
-  .then(data => {
-    if(data.tipo === "triagem") location.href = "triagem.html";
-    if(data.tipo === "medico") location.href = "medico.html";
-    if(data.tipo === "atendimento") location.href = "atendimento.html";
-  });
-}
+    const form = document.getElementById("formLogin");
+    const botao = document.getElementById("botaoEntrar");
+
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+        await login();
+    });
+
+    async function login() {
+        const usuario = document.getElementById("usuario").value.trim();
+        const senha = document.getElementById("senha").value;
+
+        if (!usuario || !senha) {
+            alert("Preencha o usuário e a senha!");
+            return;
+        }
+
+        botao.disabled = true;
+        botao.textContent = "Entrando...";
+
+        try {
+            const resposta = await fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ usuario, senha })
+            });
+
+            const data = await resposta.json();
+
+            if (!resposta.ok || data.erro) {
+                alert(data.erro || "Usuário ou senha incorretos!");
+                return;
+            }
+
+            if (data.tipo === "triagem") {
+                window.location.href = "triagem.html";
+            } else if (data.tipo === "medico") {
+                window.location.href = "medico.html";
+            } else if (data.tipo === "atendimento") {
+                window.location.href = "atendimento.html";
+            } else if (data.tipo === "admin") {
+                window.location.href = "admin.html";
+            } else {
+                alert("Tipo de usuário sem página de acesso configurada.");
+            }
+
+        } catch (erro) {
+            alert("Não foi possível conectar ao servidor. Verifique se ele está funcionando.");
+            console.error("Erro no login:", erro);
+
+        } finally {
+            botao.disabled = false;
+            botao.textContent = "Entrar";
+        }
+    }
+
+    // Atalho Ctrl + Alt + A para abrir o cadastro de usuários
+    window.addEventListener("keydown", function(e) {
+        if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "a") {
+            e.preventDefault();
+            window.location.href = "admin.html";
+        }
+    });
 </script>
+
 </body>
 </html>

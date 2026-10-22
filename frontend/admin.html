@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Hello Kitty's Hospital</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 25px 16px;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            background: linear-gradient(135deg, #eaf5ff, #eeeaff, #fff0f8);
+            color: #5e5b83;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e3dcff;
+            border-radius: 25px;
+            box-shadow: 0 12px 35px rgba(145, 133, 194, 0.18);
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #7e8ed0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .voltar:hover {
+            color: #ad83cf;
+        }
+
+        .topo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            display: block;
+            width: 230px;
+            max-width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin: 0 auto 15px;
+        }
+
+        h2 {
+            margin: 10px 0;
+            color: #8179c9;
+            font-size: 27px;
+        }
+
+        .subtitulo {
+            color: #a09bbd;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 7px;
+            color: #7773a6;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input, select {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: 1.5px solid #dedcf5;
+            border-radius: 13px;
+            background: #fbfaff;
+            color: #5e5b83;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #aaa5e8;
+            box-shadow: 0 0 0 3px #f0edff;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(100deg, #b8d9ff, #d1c2ff);
+            color: #555183;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px #e0d9ff;
+        }
+
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 1px dashed #dcd8f5;
+        }
+
+        h3 {
+            color: #8179c9;
+            font-size: 20px;
+        }
+
+        .card {
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #e4e0fb;
+            border-left: 5px solid #b9b0f0;
+            border-radius: 13px;
+            background: #f8f6ff;
+            overflow-wrap: anywhere;
+        }
+
+        .card b {
+            color: #7773b3;
+        }
+
+        .mensagem {
+            padding: 15px;
+            border-radius: 12px;
+            background: #f7f6ff;
+            color: #9994b5;
+            font-size: 14px;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 22px 18px;
+            }
+
+            h2 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <a href="index.html" class="voltar">← Voltar para o login</a>
+
+    <div class="topo">
+        <img src="logo.png" alt="Hello Kitty's Hospital" class="logo">
+        <h2>Cadastrar Usuário</h2>
+        <p class="subtitulo">Painel de administração hospitalar</p>
+    </div>
+
+    <form id="formUsuario">
+        <label for="usuario">Nome de usuário</label>
+        <input type="text" id="usuario"
+               placeholder="Digite o nome de usuário" required>
+
+        <label for="senha">Senha</label>
+        <input type="password" id="senha"
+               placeholder="Crie uma senha" required>
+
+        <label for="tipo">Setor do usuário</label>
+        <select id="tipo" required>
+            <option value="">Selecione o setor</option>
+            <option value="admin">Administrador</option>
+            <option value="triagem">Triagem</option>
+            <option value="medico">Médico</option>
+            <option value="enfermeiro">Enfermeiro</option>
+            <option value="atendimento">Atendimento</option>
+        </select>
+
+        <button type="submit">Cadastrar usuário</button>
+    </form>
+
+    <hr>
+
+    <h3>Usuários cadastrados</h3>
+    <div id="listaUsuarios">
+        <p class="mensagem">Carregando usuários...</p>
+    </div>
+
+</div>
+
+<script>
+    const form = document.getElementById("formUsuario");
+    const lista = document.getElementById("listaUsuarios");
+
+    form.addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const usuario = document.getElementById("usuario").value.trim();
+        const senha = document.getElementById("senha").value;
+        const tipo = document.getElementById("tipo").value;
+
+        try {
+            const resposta = await fetch("/usuarios", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ usuario, senha, tipo })
+            });
+
+            const dados = await resposta.json();
+
+            if (!resposta.ok) {
+                alert(dados.erro || "Não foi possível cadastrar.");
+                return;
+            }
+
+            alert("Usuário cadastrado com sucesso!");
+            form.reset();
+            carregarUsuarios();
+
+        } catch (erro) {
+            alert("Não foi possível conectar ao servidor.");
+            console.error(erro);
+        }
+    });
+
+    async function carregarUsuarios() {
+        try {
+            const resposta = await fetch("/usuarios");
+
+            if (!resposta.ok) {
+                throw new Error("Falha ao carregar usuários.");
+            }
+
+            const usuarios = await resposta.json();
+            lista.innerHTML = "";
+
+            if (usuarios.length === 0) {
+                lista.innerHTML =
+                    '<p class="mensagem">Nenhum usuário cadastrado ainda.</p>';
+                return;
+            }
+
+            usuarios.forEach(u => {
+                const card = document.createElement("div");
+                card.className = "card";
+
+                const nome = document.createElement("b");
+                nome.textContent = "Usuário: ";
+
+                const setor = document.createElement("b");
+                setor.textContent = " | Setor: ";
+
+                card.append(
+                    nome,
+                    document.createTextNode(u.usuario),
+                    setor,
+                    document.createTextNode(u.tipo)
+                );
+
+                lista.appendChild(card);
+            });
+
+        } catch (erro) {
+            lista.innerHTML =
+                '<p class="mensagem">Não foi possível carregar os usuários.</p>';
+            console.error(erro);
+        }
+    }
+
+    carregarUsuarios();
+</script>
+
+</body>
+</html>
